@@ -1,19 +1,22 @@
+import React from "react"
 import config from "../config.json"
 import styled from "styled-components"
 import { CSSReset } from "../src/components/CSSreset"
-import Menu from "../src/components/Menu"
+import Menu from "../src/components/Menu/Menu"
 import Timeline from "../src/components/Timeline"
 
 function HomePage() {
 
+  const [valorDoFiltro, setValorDoFiltro] = React.useState("");
 
   return (
     <>
       <CSSReset/>
       <div>
-      <Menu/>
+                {/* Prop Drilling */}
+                <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
       <Header/>
-      <Timeline playlists={config.playlists}/>
+      <Timeline searchValue={valorDoFiltro} playlists={config.playlists}/>
       <Favorities users={config.Favorite}/>
       </div>
     </>
@@ -118,7 +121,7 @@ return(
     <span className="favorite-container">
     {userList.map((user)=>{
       return (
-          <span className="avatar-container">
+          <span key={user.thum}className="avatar-container">
             <img className="avatar" src={user.thum} />
             <span className="username">{user.username}</span>
           </span>

@@ -46,27 +46,42 @@ export const StyledTimeline = styled.div`
   }
 `;
 
-export default function Timeline(playlists) {
+export default function Timeline({ searchValue, ...playlists }) {
   const playlistTitles = Object.keys(playlists.playlists); // Pega a key do objeto e transforma em uma array
   return (
     <StyledTimeline>
       {playlistTitles.map((playlistTitle) => {
         const videos = playlists.playlists[playlistTitle]; // retorna o conteudo do objeto que comeca com o playlist title
         return (
-          <section>
+          <section key={playlistTitle}>
             <h2>{playlistTitle}</h2>
             <div>
-            {videos.map((video) => {
+              {videos
+                .filter((video) => {
+                  const titleNormalized = video.title.toLowerCase();
+                  const searchValueNormalized = searchValue.toLowerCase();
+                  return titleNormalized.includes(searchValueNormalized);
+                })
+                .map((video) => {
+                  return (
+                    <a key={video.url} href={video.url}>
+                      <img src={video.thumb} />
+                      <span>{video.title}</span>
+                    </a>
+                  );
+                })}
+
+              {/* {videos.map((video) => {
           return (
             <a href={video.url}>
               <img src={video.thumb} />
               <span>{video.title}</span>
             </a>
           );
-        })};
+        })}; */}
             </div>
           </section>
-        )
+        );
         
         
       })}
